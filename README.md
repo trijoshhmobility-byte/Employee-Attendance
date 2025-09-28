@@ -64,7 +64,10 @@
 ### Prerequisites
 - Node.js 16+ and npm
 - Modern web browser with geolocation support
-- No external API keys required!
+- **No API keys required!** The app works completely offline
+
+### Optional Features
+- **Gemini AI Integration**: For AI-powered work log summaries, add `GEMINI_API_KEY` to your environment variables. The app provides intelligent fallback summaries when the API key is not configured.
 
 ### Installation
 
