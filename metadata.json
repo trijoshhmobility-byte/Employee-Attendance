@@ -1,7 +1,0 @@
-{
-  "name": "Copy of Employee Attendance Tracker",
-  "description": "A comprehensive employee attendance application that includes real-time location tracking and daily work logging features, ensuring accuracy, security, and a user-friendly interface for seamless workforce management.",
-  "requestFramePermissions": [
-    "geolocation"
-  ]
-}
