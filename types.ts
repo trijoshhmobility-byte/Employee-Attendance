@@ -52,6 +52,7 @@ export interface Employee {
   role: Role;
   status: EmployeeStatus;
   joinDate: string;
+  password: string; // Added password field for authentication
   phoneNumber?: string;
   emergencyContact?: string;
   workingHours: {

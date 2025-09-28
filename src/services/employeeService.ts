@@ -12,6 +12,7 @@ export const TRIJOSHH_EMPLOYEES: Employee[] = [
     role: Role.Employee,
     status: EmployeeStatus.Active,
     joinDate: '2023-01-15',
+    password: 'rahul@123', // Default employee password
     phoneNumber: '+91 9876543210',
     emergencyContact: '+91 9876543211',
     workingHours: {
@@ -35,6 +36,7 @@ export const TRIJOSHH_EMPLOYEES: Employee[] = [
     role: Role.HR,
     status: EmployeeStatus.Active,
     joinDate: '2022-11-20',
+    password: 'priya@123', // Default HR password
     phoneNumber: '+91 9876543212',
     emergencyContact: '+91 9876543213',
     workingHours: {
@@ -57,6 +59,7 @@ export const TRIJOSHH_EMPLOYEES: Employee[] = [
     role: Role.Manager,
     status: EmployeeStatus.Active,
     joinDate: '2022-08-10',
+    password: 'amit@123', // Default manager password
     phoneNumber: '+91 9876543214',
     emergencyContact: '+91 9876543215',
     workingHours: {
@@ -81,6 +84,7 @@ export const TRIJOSHH_EMPLOYEES: Employee[] = [
     role: Role.Admin,
     status: EmployeeStatus.Active,
     joinDate: '2022-01-01',
+    password: 'admin@123', // Default admin password
     phoneNumber: '+91 9876543216',
     emergencyContact: '+91 9876543217',
     workingHours: {
@@ -105,6 +109,7 @@ export const TRIJOSHH_EMPLOYEES: Employee[] = [
     role: Role.Employee,
     status: EmployeeStatus.Active,
     joinDate: '2023-03-22',
+    password: 'sneha@123', // Default employee password
     phoneNumber: '+91 9876543218',
     emergencyContact: '+91 9876543219',
     workingHours: {
@@ -168,13 +173,41 @@ export class EmployeeService {
     return this.employees.find(emp => emp.email === email) || null;
   }
 
-  public authenticateEmployee(employeeId: string, additionalCheck?: string): Employee | null {
+  public authenticateEmployee(employeeId: string, password: string): Employee | null {
     const employee = this.getEmployeeByEmployeeId(employeeId);
     if (!employee || employee.status !== EmployeeStatus.Active) {
       return null;
     }
-    // Additional validation can be added here (PIN, password, etc.)
+    
+    // Password validation
+    if (employee.password !== password) {
+      return null;
+    }
+    
     return employee;
+  }
+
+  public changePassword(employeeId: string, currentPassword: string, newPassword: string): boolean {
+    const employee = this.getEmployeeByEmployeeId(employeeId);
+    if (!employee || employee.password !== currentPassword) {
+      return false;
+    }
+    
+    // Simple password validation
+    if (newPassword.length < 6) {
+      return false;
+    }
+    
+    // Update password
+    const index = this.employees.findIndex(emp => emp.employeeId === employeeId);
+    if (index !== -1) {
+      this.employees[index].password = newPassword;
+      this.employees[index].updatedAt = new Date().toISOString();
+      this.saveToStorage();
+      return true;
+    }
+    
+    return false;
   }
 
   public addEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>): Employee {

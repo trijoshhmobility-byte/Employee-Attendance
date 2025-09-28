@@ -11,17 +11,22 @@ const TrijoshhTests = {
     console.log('Testing Employee Authentication...');
     const service = EmployeeService.getInstance();
     
-    // Test valid employee
-    const validEmployee = service.authenticateEmployee('TRJ001');
+    // Test valid employee with correct password
+    const validEmployee = service.authenticateEmployee('TRJ001', 'rahul@123');
     const test1 = validEmployee && validEmployee.employeeId === 'TRJ001';
     console.log('  ✓ Valid employee authentication:', test1 ? 'PASS' : 'FAIL');
     
     // Test invalid employee
-    const invalidEmployee = service.authenticateEmployee('INVALID');
+    const invalidEmployee = service.authenticateEmployee('INVALID', 'password');
     const test2 = invalidEmployee === null;
     console.log('  ✓ Invalid employee rejection:', test2 ? 'PASS' : 'FAIL');
     
-    return test1 && test2;
+    // Test valid employee with wrong password
+    const wrongPasswordEmployee = service.authenticateEmployee('TRJ001', 'wrongpassword');
+    const test3 = wrongPasswordEmployee === null;
+    console.log('  ✓ Wrong password rejection:', test3 ? 'PASS' : 'FAIL');
+    
+    return test1 && test2 && test3;
   },
 
   testLocationValidation: () => {
@@ -93,7 +98,7 @@ const TrijoshhTests = {
     const validationService = ValidationService.getInstance();
     
     // Authenticate employee
-    const employee = employeeService.authenticateEmployee('TRJ001');
+    const employee = employeeService.authenticateEmployee('TRJ001', 'rahul@123');
     if (!employee) {
       console.log('  ✗ Employee authentication failed');
       return false;
