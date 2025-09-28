@@ -2,6 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { AttendanceRecord, WorkLogEntry, Priority } from '../types';
 import AttendanceHistory from './AttendanceHistory';
+import RegistrationManagement from './RegistrationManagement';
 import { DownloadIcon, SearchIcon } from './icons';
 import { downloadCSV } from '../utils/csv';
 
@@ -20,6 +21,7 @@ const getPriorityBadgeColor = (priority: Priority) => {
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ records, logs }) => {
+    const [activeTab, setActiveTab] = useState<'overview' | 'registrations'>('overview');
     const [searchTerm, setSearchTerm] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -60,6 +62,37 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ records, logs }) => {
 
     return (
         <div className="space-y-6">
+            {/* Tab Navigation */}
+            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl">
+                <div className="border-b border-gray-200 dark:border-gray-700">
+                    <nav className="-mb-px flex space-x-8 px-6">
+                        <button
+                            onClick={() => setActiveTab('overview')}
+                            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                                activeTab === 'overview'
+                                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                            }`}
+                        >
+                            📊 Overview & Reports
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('registrations')}
+                            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                                activeTab === 'registrations'
+                                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                            }`}
+                        >
+                            👥 Registration Management
+                        </button>
+                    </nav>
+                </div>
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === 'overview' ? (
+                <div className="space-y-6">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
                 <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6">
@@ -172,6 +205,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ records, logs }) => {
                     </div>
                 )}
             </div>
+                </div>
+            ) : (
+                <RegistrationManagement />
+            )}
         </div>
     );
 };

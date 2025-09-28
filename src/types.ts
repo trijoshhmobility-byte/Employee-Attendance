@@ -141,3 +141,45 @@ export interface DashboardStats {
   totalWorkLogs: number;
   pendingTasks: number;
 }
+
+// Registration and email verification types
+export interface PendingRegistration {
+  id: string;
+  type: 'employee' | 'admin';
+  email: string;
+  verificationCode: string;
+  verificationCodeExpiry: string;
+  formData: {
+    name: string;
+    email: string;
+    department: string;
+    position: string;
+    phoneNumber?: string;
+    emergencyContact?: string;
+  };
+  createdAt: string;
+  isEmailVerified: boolean;
+  attempts: number;
+}
+
+export interface RegistrationFormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  department: string;
+  position: string;
+  phoneNumber?: string;
+  emergencyContact?: string;
+  role: Role;
+  workingHours: {
+    start: string;
+    end: string;
+  };
+}
+
+export interface EmailVerificationResult {
+  success: boolean;
+  message: string;
+  employee?: Employee;
+}

@@ -5,9 +5,10 @@ import TrijoshhLogo from './TrijoshhLogo';
 
 interface LoginProps {
   onLogin: (employee: Employee) => void;
+  onShowRegistration?: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
+const Login: React.FC<LoginProps> = ({ onLogin, onShowRegistration }) => {
   const [employeeId, setEmployeeId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -35,11 +36,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     } else {
       setError('Invalid Employee ID or Password');
     }
-  };
-
-  const handleDemoLogin = (demoEmployeeId: string, demoPassword: string) => {
-    setEmployeeId(demoEmployeeId);
-    setPassword(demoPassword);
   };
 
   return (
@@ -115,36 +111,20 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </button>
         </form>
         
-        <div className="mt-6 border-t border-gray-200 pt-4">
-          <p className="text-center text-xs text-gray-500 mb-3">Quick Access (Demo)</p>
-          <div className="space-y-2">
-            <button 
-              onClick={() => handleDemoLogin('TRJ001', 'rahul@123')} 
-              className="w-full text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg p-3 transition-colors font-medium text-left"
+        {/* Registration Link */}
+        {onShowRegistration && (
+          <div className="mt-6 text-center border-t border-gray-200 pt-6">
+            <p className="text-sm text-gray-600 mb-3">
+              Don't have an account?
+            </p>
+            <button
+              onClick={onShowRegistration}
+              className="w-full py-3 px-6 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-200"
             >
-              <div className="font-semibold text-gray-700">Employee Demo</div>
-              <div className="text-gray-500 mt-1">ID: TRJ001 | Password: rahul@123</div>
-            </button>
-            <button 
-              onClick={() => handleDemoLogin('TRJ004', 'admin@123')} 
-              className="w-full text-xs bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg p-3 transition-colors font-medium text-left"
-            >
-              <div className="font-semibold text-blue-700">Admin Demo</div>
-              <div className="text-blue-600 mt-1">ID: TRJ004 | Password: admin@123</div>
+              Create New Account
             </button>
           </div>
-          
-          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-            <p className="text-xs text-amber-700 font-medium mb-1">📝 Available Demo Accounts:</p>
-            <div className="text-xs text-amber-600 space-y-1">
-              <div>• TRJ001 (Employee) - rahul@123</div>
-              <div>• TRJ002 (HR) - priya@123</div>
-              <div>• TRJ003 (Manager) - amit@123</div>
-              <div>• TRJ004 (Admin) - admin@123</div>
-              <div>• TRJ005 (Employee) - sneha@123</div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

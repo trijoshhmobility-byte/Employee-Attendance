@@ -7,6 +7,7 @@ import WorkLog from './components/WorkLog';
 import RoleSelection from './components/RoleSelection';
 import AdminPanel from './components/AdminPanel';
 import Login from './components/Login';
+import Registration from './components/Registration';
 import { seedInitialData } from './mockData';
 import EmployeeService from './services/employeeService';
 import IndexedDBService from './services/databaseService';
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<Employee | null>(null);
   const [role, setRole] = useState<Role | null>(null);
   const [isDbInitialized, setIsDbInitialized] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
 
   // Initialize database and check for existing session
   useEffect(() => {
@@ -76,9 +78,25 @@ const App: React.FC = () => {
     );
   }
 
-  // Show login if no authenticated user
+  // Show login or registration if no authenticated user
   if (!currentUser || !role) {
-    return <Login onLogin={handleLogin} />;
+    if (showRegistration) {
+      return (
+        <Registration 
+          onRegistrationComplete={() => {
+            setShowRegistration(false);
+          }}
+          onBackToLogin={() => setShowRegistration(false)}
+        />
+      );
+    }
+    
+    return (
+      <Login 
+        onLogin={handleLogin} 
+        onShowRegistration={() => setShowRegistration(true)}
+      />
+    );
   }
 
   const handleSwitchRole = () => {
